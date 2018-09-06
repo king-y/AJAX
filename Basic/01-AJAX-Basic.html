@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX基础</title>
+</head>
+<body>
+
+</body>
+    <script>
+        //创建对象
+        var xhr = new XMLHttpRequest();
+
+         // 事件绑定
+         // 每次 readyState 属性改变的时候调用的事件句柄函数
+         xhr.onreadystatechange = function() {
+                // readyState,HTTP 请求的状态.当一个 XMLHttpRequest 初次创建时
+                // 这个属性的值从 0 开始，直到接收到完整的 HTTP 响应，这个值增加到 4。
+                if (xhr.readyState == 4) {
+                    //status服务器返回的 HTTP 状态代码
+                    if (xhr.status == 200) {
+                        //responseText服务器接收到的响应体
+                        alert(xhr.responseText);
+                    }
+                }
+            }
+
+         // 请求初始化
+         // 参1 method 请求方法
+        // 参2 url 请求地址
+        // 参3 是否同/异步,默认true表示异步
+        // 参4,5 认证的用户名和密码需要时才填写
+         xhr.open('get','../php/111.php',true)
+
+         // 发送请求
+         xhr.send();
+    </script>
+</html>
