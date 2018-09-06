@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <title>处理JSON数据</title>
+    <style type="text/css">
+        #box{
+            width: 800px;
+            border: 1px solid #000;
+            padding: 20px;
+            background-color: #feeeed;
+        }
+        tr:nth-child(2n){
+            background: #cea;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="loadHtml()">加载</button>
+    <hr>
+
+    <div id="box"></div>
+
+    <script>
+
+    // var a = '{"name":"haha", "age": "17"}';
+    // console.log(a);
+    // console.log(typeof(a));
+
+    // //第一种
+    // var str = 'var yy = {"name":"hehe", "age": "17"}';
+    // eval(str);
+    // console.log(yy);
+
+    // //第二种
+    // var yy = eval('({"name":"aiai", "age": "17"})');
+    // console.log(yy);
+
+    // //第三种
+    // // JSON 解析器
+    // var yy = JSON.parse('{"name":"溜溜", "age": "17"}');
+    // console.log(yy);
+
+
+    function loadHtml() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    // 清空之前的结果
+                    box.innerHTML = '';
+                    // 解析JSON数据
+                    var jsonStr =  xhr.responseText;
+                    var obj = JSON.parse(jsonStr);
+                    console.log(obj);
+
+                    // 把数据以表格的形式输出到页面
+                    // 创建表格
+                    var table = document.createElement('table');
+                    table.width = 800;
+                    table.border = 1;
+                    table.cellSpacing = 0;
+                    table.cellPadding = 5;
+                    table.id = 'table';
+
+                    box.appendChild(table);
+
+                    var tr = table.insertRow(0);
+                    addTH(tr, ['ID','NAME', 'SEX','AGE','PRO']);
+
+                    // 添加数据
+                    for (var i = 0; i < obj.length; i++) {
+                        var tr = table.insertRow(i+1);
+                        tr.insertCell(0).innerHTML = obj[i].id;
+                        tr.insertCell(1).innerHTML = obj[i].name;
+                        tr.insertCell(2).innerHTML = obj[i].sex;
+                        tr.insertCell(3).innerHTML = obj[i].age;
+                        tr.insertCell(4).innerHTML = obj[i].province;
+                    }
+
+                }
+            }
+        }
+        xhr.open('get', '../php/4.php', true);
+        xhr.send();
+    }
+
+    // 添加TH
+    function addTH(tr, data) {
+        for (var i = 0; i < data.length; i++) {
+            var th = document.createElement('th');
+            th.innerHTML = data[i];
+            tr.appendChild(th);
+        }
+    }
+
+
+
+
+    </script>
+</body>
+</html>
