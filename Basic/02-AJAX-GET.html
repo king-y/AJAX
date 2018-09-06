@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GET传参</title>
+    <style>
+        #box{
+            width: 200px;
+            height: 100px;
+            border: 1px solid #ccc;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    num1: <input type="text" id="num1">
+    num2: <input type="text" id="num2">
+    <br><br>
+    <button onclick="add()">相加</button>
+    <div id="box"></div>
+</body>
+    <script>
+        function add() {
+            var onum1 = document.getElementById('num1').value;
+            var onum2 = document.getElementById('num2').value;
+
+            // 创建对象
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        box.innerHTML = xhr.responseText;
+                    }
+                }
+            }
+            xhr.open('get','../php/2.php?a='+onum1+'&b='+onum2,true);
+            xhr.send();
+        }
+    </script>
+</html>
