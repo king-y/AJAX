@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GET传参</title>
+    <style>
+        #box {
+            width: 200px;
+            height: 50px;
+            border: 1px solid #ccc;
+            font-size: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    Num1: <input type="text" id="n1">
+    Num2: <input type="text" id="n2">
+    <br><br>
+    <button onclick="add()">相加</button>
+    <div id="box"></div>
+</body>
+    <script>
+        function add() {
+            var oN1 = document.getElementById('n1').value;
+            var oN2 = document.getElementById('n2').value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        box.innerHTML = xhr.responseText;
+                    }
+                }
+            }
+            xhr.open('post','../php/3.php',true);
+            // 设置请求头文件
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            xhr.send('a='+oN1+'&b='+oN2);
+        }
+
+
+    </script>
+</html>
