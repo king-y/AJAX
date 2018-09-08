@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ajax的同步异步</title>
+</head>
+
+<body>
+    <button onclick="load(false)">同步</button>
+    <button onclick="load(true)">异步</button>
+</body>
+<script>
+function load(b) {
+    var msg = '我是来自于JS的值';
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                msg = xhr.responseText;
+            }
+        }
+    }
+    xhr.open('get', '../php/7.php', b);
+    xhr.send();
+
+    alert(msg);
+}
+</script>
+
+</html>
