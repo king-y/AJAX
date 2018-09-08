@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX封装</title>
+</head>
+
+<body>
+</body>
+<script>
+     // 此处设计 1个参数去处理所有
+    // function ajax(url, callback){
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.onreadystatechange = function () {
+    //         if (xhr.readyState == 4) {
+    //             if (xhr.status == 200) {
+    //                 var result = xhr.responseText;
+    //                 // return result;
+    //                 // 处理结果
+    //                 callback(result);
+    //             }
+    //         }
+    //     }
+    //     xhr.open('get', url, true);
+    //     xhr.send();
+    // }
+
+    // ajax('../php/8.php', function(result){
+    //     document.write('<h1>'+result+'</h1>');
+    // });
+    // ajax('../php/8.php', function(result){
+    //     console.log(result);
+    // });
+
+    // 单个网
+        function ajax(options){
+        var xhr = null;
+        var params = formsParams(options.data);
+        //创建对象
+        if(window.XMLHttpRequest){
+            xhr = new XMLHttpRequest()
+        } else {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        // 连接
+        if(options.type == "GET"){
+            xhr.open(options.type,options.url + "?"+ params,options.async);
+            xhr.send(null)
+        } else if(options.type == "POST"){
+            xhr.open(options.type,options.url,options.async);
+            xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            xhr.send(params);
+        }
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4 && xhr.status == 200){
+                options.success(xhr.responseText);
+            }
+        }
+        function formsParams(data){
+            var arr = [];
+            for(var prop in data){
+                arr.push(prop + "=" + data[prop]);
+            }
+            return arr.join("&");
+        }
+
+    }
+
+    ajax({
+        url : "../php/8.php",  // url---->地址
+        type : "POST",   // type ---> 请求方式
+        async : true,   // async----> 同步：false，异步：true
+        data : {        //传入信息
+            name : "张三",
+            age : 18
+        },
+        success : function(data){   //返回接受信息
+            console.log(data);
+        }
+    })
+
+
+
+//     // //单个封装
+//     var $={
+//     //传递参数对象
+//     //{‘name’:’jack,’age’:20}=>  name=jack&age=20&
+//     getParmeter:function(data){
+//         var result="";
+//         for(var key in data){
+//             result=result+key+"="+data[key]+"&";
+//         }
+//         //将结果最后多余的&截取掉
+//         return result.slice(0,-1);
+//     },
+//     //实现ajax请求
+//     ajax:function(obj){
+//         //判断有没有传递参数，同时参数是否是一个对象
+//         if(obj==null || typeof obj!="object"){
+//             return false;
+//         }
+//         //获取请求类型,如果没有传递请求方式，那么默认为get
+//         var type=obj.type || 'get';
+//         //获取请求的url  location.pathname:就是指当前请求发起的路径
+//         var url=obj.url || location.pathname;
+//         //获取请求传递的参数
+//         var data=obj.data || {};
+//         //获取拼接之后的参数
+//         data=this.getParmeter(data);
+//         //获取请求传递的回调函数
+//         var success=obj.success || function(){};
+
+//         //开始发起异步请求
+//         //创建异步对象
+//         var xhr=new XMLHttpRequest();
+//         //判断请求类型，决定是否需要拼接参数到url
+//         if(type=='get'){
+//             url=url+"?"+data;
+//             //重置参数，为post请求简化处理
+//             data=null;
+//         }
+//         xhr.open(type,url);
+//         //设置请求头:判断请求方式，如果是post则进行设置
+//         if(type=="post"){
+//             xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+//         }
+//         //设置请求体,post请求则需要传递参数
+//         xhr.send(data);
+
+//         //处理响应
+//         xhr.onreadystatechange=function(){
+//             //判断响应是否成功
+//             if(xhr.status==200 && xhr.readyState==4){
+//                 //客户端可用的响应结果
+//                 var result=null;
+//                 //获取响应头Content-Type ---类型是字符串
+//                 var grc=xhr.getResponseHeader("Content-Type");
+//                 //根据Content-Type类型来判断如何进行解析
+//                 if(grc.indexOf("json") != -1){
+//                     //转换为js对象
+//                     result=JSON.parse(xhr.responseText);
+//                 }
+//                 else if(grc.indexOf("xml") != -1){
+//                     result=xhr.responseXML;
+//                 }
+//                 else{
+//                     result=xhr.responseText;
+//                 }
+//                 //拿到数据，调用客户端传递过来的回调函数
+//                 success(result);
+//             }
+//         }
+
+//     }
+// };
+
+// $.ajax({
+//     url:'../php/8.php',
+//     type:'get',
+//     data: {},
+//     success:function(result){
+//         console.log(data);
+//     }
+// });
+</script>
+
+</html>
