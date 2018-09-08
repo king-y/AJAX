@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX同步异步</title>
+    <style>
+        #box{
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #000;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="loadHtml()">加载</button>
+    <hr>
+
+    <div id="box"></div>
+
+    <script>
+    // 跨域
+    // 发出的请求不是本域的: 域名 / 协议 / 端口
+    // 浏览器的限制,不是服务器不让跨域,而是浏览器为了安全所做的限制
+    // XHR对象本身 不支持跨
+
+    // PS. 禁用浏览器的安全限制
+    // --disable-web-security --user-data-dir=d:\temp1
+
+    // 声明函数
+    // function makedata(obj) {
+    //     for (var i in obj) {
+    //         box.innerHTML += i + ' : ' +obj[i] + '<br>';
+    //     }
+    // }
+
+    // // JSONP的关键步骤
+    // function loadHtml() {
+    //     // 创建JS标签
+    //     var script = document.createElement('script');
+    //     // 设置JS标签的src地址
+    //     script.src = 'http://localhost/JsWork/JS12/php/jsonp.php';
+    //     // 将JS标签放到页面之中
+    //     document.body.appendChild(script);
+    // }
+
+
+    // AJAX 无法跨域
+    function loadHtml(){
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var obj = JSON.parse(xhr.responseText);
+                    for (var i in obj) {
+                        box.innerHTML += i + ' : ' +obj[i] + '<br>';
+                    }
+                }
+            }
+        }
+        xhr.open('get', 'http://127.0.0.1/JSWork/JS12/php/jsonp.php', true);
+        xhr.send();
+    }
+    </script>
+</body>
+</html>
